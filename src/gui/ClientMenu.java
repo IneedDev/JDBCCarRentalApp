@@ -67,7 +67,6 @@ public class ClientMenu {
 
             System.out.println("Repeat password");
             String repartePassword = scanner.nextLine();
-
             if(password.equals(repartePassword)){
                 Client client = new Client();
                 client.setName(name);
