@@ -27,13 +27,29 @@ public class ClientMenu {
             switch (choice){
                 case 1:
                     UserDB.authenticationClient(login());
-                    break;
+                    return;
                 case 2:
                     UserDB.addClient(register());
                     break;
             }
         }
     }
+
+    public static void clientLoginSubMenu(){
+        while (true){
+            int choice = clientMenu();
+            switch (choice){
+                case 1:
+                    UserDB.authenticationClient(login());
+                    return;
+                case 2:
+                    UserDB.addClient(register());
+                    break;
+            }
+        }
+    }
+
+
 
 
     public static Client login(){
