@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static int startMenu(){
+    public static int startMenuInput(){
         do{
             System.out.println("1 Client dashboard");
             System.out.println("2 Administrator dashboard");
@@ -22,12 +22,14 @@ public class Menu {
 
     public static void displayMenu(){
         while (true){
-            int choice = startMenu();
+            int choice = startMenuInput();
             switch (choice){
                 case 1:
                     System.out.println("Client menu");
 
+                    // Client login call login and menu after login
                     ClientMenu.clientLoginMenu();
+                    //ClientMenu.clientMenuAfterLoginInput();
                     break;
                 case 2:
                     System.out.println("Admin menu");

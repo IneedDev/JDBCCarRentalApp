@@ -1,13 +1,16 @@
 package gui;
 
+import Model.Car;
 import Model.Client;
+import db.CarDB;
 import db.UserDB;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ClientMenu {
 
-    public static int clientMenu(){
+    public static int clientMenuInput(){
         do{
             System.out.println("1 Login");
             System.out.println("2 Register");
@@ -21,13 +24,50 @@ public class ClientMenu {
         }while (true);
     }
 
+    public static int clientMenuAfterLoginInput(){
+        do{
+            System.out.println("1 Get cars");
+            System.out.println("2 Reverse a car");
+
+            Scanner scanner = new Scanner(System.in);
+            int choice = Integer.parseInt(scanner.nextLine());
+
+            if (choice==1 || choice==2){
+                return choice;
+            }
+        }while (true);
+    }
+
+    public static void clientMenuAfterLogin(){
+        while (true){
+            int choice = clientMenuAfterLoginInput();
+            switch (choice){
+                case 1:
+                    CarDB.getAllCars();
+                    List<Car> carsFromDatabase = CarDB.getAllCars();
+                    for (Car car : carsFromDatabase) {
+                        System.out.println(car.getId()+" "+ car.getType()+" "+car.getName());
+                    }
+                    break;
+                case 2:
+                    System.out.println("Call to DB2");
+                    break;
+            }
+        }
+    }
+
     public static void clientLoginMenu(){
         while (true){
-            int choice = clientMenu();
+            int choice = clientMenuInput();
             switch (choice){
                 case 1:
-                    UserDB.authenticationClient(login());
-                    return;
+                    if(UserDB.authenticationClient(clientMenuLoginInput())){
+                        clientMenuAfterLogin();
+                    }else {
+                        UserDB.authenticationClient(clientMenuLoginInput());
+                        clientMenuLoginInput();
+                    }
+                    break;
                 case 2:
                     UserDB.addClient(register());
                     break;
@@ -35,24 +75,24 @@ public class ClientMenu {
         }
     }
 
-    public static void clientLoginSubMenu(){
-        while (true){
-            int choice = clientMenu();
-            switch (choice){
-                case 1:
-                    UserDB.authenticationClient(login());
-                    return;
-                case 2:
-                    UserDB.addClient(register());
-                    break;
-            }
-        }
-    }
+//    public static void clientLoginSubMenu(){
+//        while (true){
+//            int choice = clientMenu();
+//            switch (choice){
+//                case 1:
+//                    UserDB.authenticationClient(login());
+//                    return;
+//                case 2:
+//                    UserDB.addClient(register());
+//                    break;
+//            }
+//        }
+//    }
 
 
 
 
-    public static Client login(){
+    public static Client clientMenuLoginInput(){
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Login login method");
@@ -96,19 +136,19 @@ public class ClientMenu {
 
     }
 
-    public static void displayMenuLogin(){
-        while (true){
-            int choice = clientMenu();
-            switch (choice){
-                case 1:
-                    System.out.println("Logujemy sie");
-                    //UserDB.addClient();
-                case 2:
-                    System.out.println("Option 2 was choose");
-                    break;
-            }
-        }
-    }
+//    public static void displayMenuLogin(){
+//        while (true){
+//            int choice = clientMenu();
+//            switch (choice){
+//                case 1:
+//                    System.out.println("Logujemy sie");
+//                    //UserDB.addClient();
+//                case 2:
+//                    System.out.println("Option 2 was choose");
+//                    break;
+//            }
+//        }
+//    }
 
 
 

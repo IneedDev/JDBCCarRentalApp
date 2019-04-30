@@ -34,7 +34,7 @@ public class UserDB {
                 System.out.println("User is logged");
                 return client.getPassword_not_encrypted().equals(passwordFromDatabase);
             }else {
-                System.out.println("Password does not match login");
+                System.out.println("Password does not match login. Try again");
                 return false;
             }
 
