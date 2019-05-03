@@ -12,8 +12,15 @@ public class Menu {
             System.out.println("1 Client dashboard");
             System.out.println("2 Administrator dashboard");
             Scanner scanner = new Scanner(System.in);
-            int choice = Integer.parseInt(scanner.nextLine());
-
+            while (!scanner.hasNextInt()){
+                String input = scanner.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
+            int choice = scanner.nextInt();
+            while (choice<0){
+                System.out.printf("You have entered a positive number %d.\n", choice);
+                break;
+            }
             if (choice==1 || choice==2){
                 return choice;
             }
@@ -33,7 +40,7 @@ public class Menu {
                     break;
                 case 2:
                     System.out.println("Admin menu");
-
+                    AdminMenu.adminMenuInput();
                     break;
             }
         }

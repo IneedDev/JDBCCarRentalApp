@@ -2,6 +2,7 @@ package gui;
 
 import Model.Car;
 import Model.Client;
+import Model.Validator;
 import db.CarDB;
 import db.UserDB;
 
@@ -16,7 +17,16 @@ public class ClientMenu {
             System.out.println("2 Register");
 
             Scanner scanner = new Scanner(System.in);
-            int choice = Integer.parseInt(scanner.nextLine());
+
+            while (!scanner.hasNextInt()){
+                String input = scanner.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
+            int choice = scanner.nextInt();
+            while (choice<0){
+                System.out.printf("You have entered a negative number %d.\n", choice);
+                break;
+            }
 
             if (choice==1 || choice==2){
                 return choice;
@@ -28,10 +38,10 @@ public class ClientMenu {
         do{
             System.out.println("1 Get cars");
             System.out.println("2 Reverse a car");
-
             Scanner scanner = new Scanner(System.in);
-            int choice = Integer.parseInt(scanner.nextLine());
 
+
+            int choice = Integer.parseInt(scanner.nextLine());
             if (choice==1 || choice==2){
                 return choice;
             }
@@ -45,6 +55,7 @@ public class ClientMenu {
                 case 1:
                     CarDB.getAllCars();
                     List<Car> carsFromDatabase = CarDB.getAllCars();
+
                     for (Car car : carsFromDatabase) {
                         System.out.println(car.getId()+" "+ car.getType()+" "+car.getName());
                     }
@@ -75,30 +86,14 @@ public class ClientMenu {
         }
     }
 
-//    public static void clientLoginSubMenu(){
-//        while (true){
-//            int choice = clientMenu();
-//            switch (choice){
-//                case 1:
-//                    UserDB.authenticationClient(login());
-//                    return;
-//                case 2:
-//                    UserDB.addClient(register());
-//                    break;
-//            }
-//        }
-//    }
-
-
-
 
     public static Client clientMenuLoginInput(){
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Login login method");
+        System.out.println("Give login");
         String login = scanner.nextLine();
 
-        System.out.println("Password login method");
+        System.out.println("Give password");
         String password = scanner.nextLine();
 
         Client client = new Client();
@@ -107,12 +102,16 @@ public class ClientMenu {
         return client;
     }
 
+
     static Client register(){
         while (true){
             Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Name ");
+            System.out.println("Name");
             String name = scanner.nextLine();
+
+            System.out.println("Email");
+            String email = scanner.nextLine();
 
             System.out.println("Login");
             String login = scanner.nextLine();
