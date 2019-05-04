@@ -1,7 +1,10 @@
 package db;
 
 import Model.Car;
+import Model.Client;
 import Model.Reservation;
+import gui.ClientMenu;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,7 +38,19 @@ public class ReservationDB {
         return reservationsList;
     }
 
-    public static void makeReservation(){
+    public static void makeReservation(Reservation reservation){
+        String sql= "INSERT INTO treservations (CarID, ReservationStartDate, ReservationEndDate, Login) VALUES (?, ?, ?, ?)";
+        try{
+            PreparedStatement ps = ConnectorDB.connection.prepareStatement(sql);
+            ps.setInt(1,reservation.getCarID());
+            ps.setString(2,reservation.getReservationStartDate());
+            ps.setString(3,reservation.getReservationEndDate());
+            ps.setString(4,reservation.getLogin());
+            ps.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
 
 
 
