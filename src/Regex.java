@@ -37,9 +37,9 @@ public class Regex {
         System.out.println("Dopasowanie " + Pattern.matches(regZip,zip));
 
         // dopasowac maxymalna liczbe znakow do < X
-        String regEmail = "[a-zA-Z]@[a-zA-Z]\\.[a-zA-Z]";
-        String email = "e@e.p";
-        System.out.println("Dopasowanie " + Pattern.matches(regEmail,email));
+        String regEmail = "[a-zA-Z]@[a-zA-Z]\\.[a-zA-Z]*";
+        String email = "e@e.pl";
+        System.out.println("Dopasowanie email " + Pattern.matches(regEmail,email));
 
         // data
         String regData = "\\d{4}-\\d{2}-\\d{2} [a-zA-Z]{2,3}";

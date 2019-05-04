@@ -8,6 +8,7 @@ import db.UserDB;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class ClientMenu {
 
@@ -48,6 +49,31 @@ public class ClientMenu {
         }while (true);
     }
 
+    public static int clientReservationMenuInput(){
+        do{
+            System.out.println("1 Give CarID");
+            System.out.println("2 Reservation start date (YYYY-MM-DD) ");
+            System.out.println("3 Reservation end date (YYYY-MM-DD) ");
+
+            Scanner scanner = new Scanner(System.in);
+
+            while (!scanner.hasNextInt()){
+                String input = scanner.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
+            int choice = scanner.nextInt();
+            while (choice<0){
+                System.out.printf("You have entered a negative number %d.\n", choice);
+                break;
+            }
+
+            if (choice==1 || choice==2 || choice==3){
+                return choice;
+            }
+        }while (true);
+    }
+
+
     public static void clientMenuAfterLogin(){
         while (true){
             int choice = clientMenuAfterLoginInput();
@@ -61,6 +87,7 @@ public class ClientMenu {
                     }
                     break;
                 case 2:
+
                     System.out.println("Call to DB2");
                     break;
             }
@@ -108,25 +135,44 @@ public class ClientMenu {
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("Name");
-            String name = scanner.nextLine();
+            String name = scanner.next();
 
-            System.out.println("Email");
-            String email = scanner.nextLine();
+            String regEmail = "[a-zA-Z]*@[a-zA-Z]*\\.[a-zA-Z]*";
+            String inputEmail;
+            do {
+                System.out.println("Email");
+
+                inputEmail = scanner.next();
+            }while (!inputEmail.matches(regEmail));
+
+            System.out.println("Your email is: " + inputEmail);
+
+            scanner.nextLine();
 
             System.out.println("Login");
-            String login = scanner.nextLine();
-            System.out.print("");
-            System.out.println("Password");
-            String password = scanner.nextLine();
-            System.out.print("");
+            String login = scanner.next();
+            scanner.nextLine();
+            String regPassword = "(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40}";
+            String inputPassword;
+            do {
+                System.out.println("Password");
+                System.out.println("Be between 8 and 40 characters long\n" +
+                        "Contain at least one digit.\n" +
+                        "Contain at least one lower case character.\n" +
+                        "Contain at least one upper case character.\n" +
+                        "Contain at least on special character from [ @ # $ % ! . ].");
+                inputPassword = scanner.next();
+            }while (!inputPassword.matches(regPassword));
+                System.out.println("Correct password ");
+            scanner.nextLine();
 
             System.out.println("Repeat password");
             String repartePassword = scanner.nextLine();
-            if(password.equals(repartePassword)){
+            if(inputPassword.equals(repartePassword)){
                 Client client = new Client();
                 client.setName(name);
                 client.setLogin(login);
-                client.setPassword_not_encrypted(password);
+                client.setPassword_not_encrypted(inputPassword);
                 return client;
             }else {
                 System.out.println("Password does not match");

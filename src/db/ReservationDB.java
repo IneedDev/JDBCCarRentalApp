@@ -35,5 +35,13 @@ public class ReservationDB {
         return reservationsList;
     }
 
+    public static void makeReservation(){
+
+
+
+
+
+    }
+
 
 }
