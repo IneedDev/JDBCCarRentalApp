@@ -40,7 +40,7 @@ public class Menu {
                     break;
                 case 2:
                     System.out.println("Admin menu");
-                    AdminMenu.adminMenuInput();
+                    AdminMenu.adminLoginMenu();
                     break;
             }
         }

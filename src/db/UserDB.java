@@ -1,5 +1,6 @@
 package db;
 
+import Model.Admin;
 import Model.Car;
 import Model.Client;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -15,7 +16,7 @@ public class UserDB {
     public static List<Client> getAllClients(){
 
         List<Client> clientList = new ArrayList<>();
-        String sql = "SELECT * FROM `tclient`";
+        String sql = "SELECT * FROM `tclients`";
 
         try{
             PreparedStatement ps = ConnectorDB.connection.prepareStatement(sql);
@@ -59,6 +60,27 @@ public class UserDB {
                 String passwordFromDatabase = resultSet.getString("password_not_encrypted");
                 System.out.println("User is logged");
                 return client.getPassword_not_encrypted().equals(passwordFromDatabase);
+            }else {
+                System.out.println("Password does not match login. Try again");
+                return false;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean authenticationAdmin(Admin admin){
+        String sql = "SELECT * FROM tadmins WHERE login=?";
+        try{
+            PreparedStatement ps = ConnectorDB.connection.prepareStatement(sql);
+            ps.setString(1,admin.getLogin());
+            ResultSet resultSet = ps.executeQuery();
+            if(resultSet.next()){
+                String passwordFromDatabase = resultSet.getString("password_not_encrypted");
+                System.out.println("Admin is logged");
+                return admin.getPassword_not_encrypted().equals(passwordFromDatabase);
             }else {
                 System.out.println("Password does not match login. Try again");
                 return false;

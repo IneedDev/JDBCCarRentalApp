@@ -24,9 +24,9 @@ public class ReservationDB {
                 Reservation reservation = new Reservation();
                 reservation.setReservationID(resultSet.getInt("ReservationID"));
                 reservation.setCarID(resultSet.getInt("CarID"));
-                reservation.setLogin(resultSet.getString("Login"));
                 reservation.setReservationStartDate(resultSet.getString("ReservationStartDate"));
                 reservation.setReservationEndDate(resultSet.getString("ReservationEndDate"));
+                reservation.setPesel(resultSet.getString("Pesel"));
                 reservationsList.add(reservation);
             }
         }catch (SQLException e){
@@ -54,9 +54,19 @@ public class ReservationDB {
         }
     }
 
+    public static List<Reservation> checkDatesForReservation(Reservation reservation){
+        List<Reservation> reservationList = new ArrayList<>();
+        String sql2= "SELECT ReservationStartDate, ReservationEndDate FROM treservations WHERE ReservationStartDate< ? AND ReservationEndDate> ?";
 
-public static void checkDatesForReservation(Reservation reservation){
-        getAllReservation().equals(reservation);
+        try{
+            PreparedStatement ps = ConnectorDB.connection.prepareStatement(sql2);
+            ps.setString(1,reservation.getReservationStartDate());
+            ps.setString(2,reservation.getReservationEndDate());
+            ps.execute();
 
+        }catch (SQLException e){
+            e.getStackTrace();
+        }
+        return reservationList;
     }
 }

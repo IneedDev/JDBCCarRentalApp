@@ -81,6 +81,7 @@ public class ClientMenu {
         while (!(ReservationEndDate=scanner.next()).matches(regData)){
             System.out.printf("Date format not correct, Please try once again\n");
         }
+
         System.out.println("4 Give your PESEL number");
         String Pesel = scanner.next();
         Reservation reservation = new Reservation();
@@ -88,6 +89,17 @@ public class ClientMenu {
         reservation.setReservationEndDate(ReservationEndDate);
         reservation.setCarID(CarID);
         reservation.setPesel(Pesel);
+
+        //clarify how to pass reservation object to another method without repeating
+//        System.out.println(ReservationDB.checkDatesForReservation(reservation));
+//
+//        if (!ReservationDB.checkDatesForReservation(reservation).isEmpty()){
+//            System.out.printf("you can make reservation");
+//            ReservationDB.makeReservation(reservation);
+//
+//        }else {
+//            System.out.printf("Change dates");
+//        }
 
         /* this cause second login menu
         reservation.setLogin(clientCurrentLogin());
@@ -109,12 +121,13 @@ public class ClientMenu {
                     System.out.println("************************");
                     break;
                 case 2:
-                    clientMenuReservationProcess();
+                    clientReservationMenuInput();
                     System.out.println("Reservation done!!!");
                     break;
             }
         }
     }
+
     public static void clientMenuReservationProcess(){
         ReservationDB.makeReservation(clientReservationMenuInput());
     }
