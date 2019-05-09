@@ -8,6 +8,7 @@ import db.ReservationDB;
 import db.UserDB;
 
 import javax.sound.midi.Soundbank;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,9 +18,7 @@ public class ClientMenu {
         do{
             System.out.println("1 Login");
             System.out.println("2 Register");
-
             Scanner scanner = new Scanner(System.in);
-
             while (!scanner.hasNextInt()){
                 String input = scanner.next();
                 System.out.printf("\"%s\" is not a valid number.\n", input);
@@ -29,67 +28,10 @@ public class ClientMenu {
                 System.out.printf("You have entered a negative number %d.\n", choice);
                 break;
             }
-
             if (choice==1 || choice==2){
                 return choice;
             }
         }while (true);
-    }
-
-    public static int clientMenuAfterLoginInput(){
-        do{
-            System.out.println("1 Get cars");
-            System.out.println("2 Reserve a car");
-            Scanner scanner = new Scanner(System.in);
-
-
-            int choice = Integer.parseInt(scanner.nextLine());
-            if (choice==1 || choice==2){
-                return choice;
-            }
-        }while (true);
-    }
-
-    public static Reservation clientReservationMenuInput(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("1 Give CarID");
-        int CarID = scanner.nextInt();
-        System.out.println("2 Reservation start date (YYYY-MM-DD) ");
-        String ReservationStartDate = scanner.nextLine();
-        scanner.next();
-        System.out.println("3 Reservation end date (YYYY-MM-DD) ");
-        String ReservationEndDate = scanner.nextLine();
-        scanner.next();
-        Reservation reservation = new Reservation();
-        reservation.setReservationStartDate(ReservationStartDate);
-        reservation.setReservationEndDate(ReservationEndDate);
-        reservation.setCarID(CarID);
-        reservation.setLogin(clientCurrentLogin());
-        return reservation;
-    }
-
-    public static void clientMenuAfterLogin(){
-        while (true){
-            int choice = clientMenuAfterLoginInput();
-            switch (choice){
-                case 1:
-                    CarDB.getAllCars();
-                    List<Car> carsFromDatabase = CarDB.getAllCars();
-
-                    for (Car car : carsFromDatabase) {
-                        System.out.println(car.getId()+" "+ car.getType()+" "+car.getName());
-                    }
-                    break;
-                case 2:
-                    clientMenuReservationProcess();
-                    System.out.println("Reservation done!!!");
-                    break;
-            }
-        }
-    }
-
-    public static void clientMenuReservationProcess(){
-        ReservationDB.makeReservation(clientReservationMenuInput());
     }
     public static void clientLoginMenu(){
         while (true){
@@ -108,6 +50,87 @@ public class ClientMenu {
                     break;
             }
         }
+    }
+
+    public static int clientMenuAfterLoginInput(){
+        do{
+            System.out.println("1 Get cars");
+            System.out.println("2 Reserve a car");
+            Scanner scanner = new Scanner(System.in);
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice==1 || choice==2){
+                return choice;
+            }
+        }while (true);
+    }
+
+    public static Reservation clientReservationMenuInput(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("1 Give CarID");
+        int CarID = scanner.nextInt();
+
+        String regData = "\\d{4}-\\d{2}-\\d{2}";
+        System.out.println("2 Reservation start date (YYYY-MM-DD) ");
+        String ReservationStartDate;
+
+        while (!(ReservationStartDate=scanner.next()).matches(regData)){
+            System.out.printf("Date format not correct, Please try once again\n");
+        }
+        System.out.println("3 Reservation end date (YYYY-MM-DD) ");
+        String ReservationEndDate;
+        while (!(ReservationEndDate=scanner.next()).matches(regData)){
+            System.out.printf("Date format not correct, Please try once again\n");
+        }
+        System.out.println("4 Give your PESEL number");
+        String Pesel = scanner.next();
+        Reservation reservation = new Reservation();
+        reservation.setReservationStartDate(ReservationStartDate);
+        reservation.setReservationEndDate(ReservationEndDate);
+        reservation.setCarID(CarID);
+        reservation.setPesel(Pesel);
+
+        /* this cause second login menu
+        reservation.setLogin(clientCurrentLogin());
+         */
+        return reservation;
+    }
+    public static void clientMenuAfterLogin(){
+        while (true){
+            int choice = clientMenuAfterLoginInput();
+            switch (choice){
+                case 1:
+                    CarDB.getAllCars();
+
+                    List<Car> carsFromDatabase = CarDB.getAllCars();
+                    System.out.println("************************");
+                    for (Car car : carsFromDatabase) {
+                        System.out.println(car.getId()+" | "+ car.getType()+" | "+car.getName());
+                    }
+                    System.out.println("************************");
+                    break;
+                case 2:
+                    clientMenuReservationProcess();
+                    System.out.println("Reservation done!!!");
+                    break;
+            }
+        }
+    }
+    public static void clientMenuReservationProcess(){
+        ReservationDB.makeReservation(clientReservationMenuInput());
+    }
+
+    private static List<Reservation> checkReservetionAvailability(){
+        List<Reservation> reservationList = new ArrayList<>();
+        Reservation reservation = new Reservation();
+        reservation.setReservationStartDate(clientReservationMenuInput().getReservationStartDate());
+        reservation.setReservationEndDate(clientReservationMenuInput().getReservationEndDate());
+        reservation.setCarID(clientReservationMenuInput().getCarID());
+        reservationList.add(reservation);
+
+        return reservationList;
+    }
+    private static void checkReservetionIsPOssible(Reservation reservation){
+        ReservationDB.getAllReservation();
     }
 
     public static Client clientMenuLoginInput(){

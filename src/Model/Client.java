@@ -6,6 +6,15 @@ public class Client {
     private String login;
     private String password_encrypted;
     private String password_not_encrypted;
+    private String pesel;
+
+    public String getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
+    }
 
     public int getId() {
         return id;

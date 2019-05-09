@@ -18,7 +18,6 @@ public class CarDB {
 
         List<Car> carList = new ArrayList<>();
         String sql = "SELECT * FROM `tcars`";
-
         try{
             PreparedStatement ps = ConnectorDB.connection.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
@@ -30,10 +29,13 @@ public class CarDB {
                 car.setType(resultSet.getString("Type"));
                 carList.add(car);
             }
+
         }catch (SQLException e){
             e.printStackTrace();
         }
+
         return carList;
+
     }
 
 
