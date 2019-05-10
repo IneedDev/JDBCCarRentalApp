@@ -20,6 +20,8 @@ public class ReservationDB {
         try{
             PreparedStatement ps = ConnectorDB.connection.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
+            System.out.println(String.format("%10s %20s %10s %20s %10s %20s %10s", "ReservationID", "|", "CarID", "|", "ReservationStartDate", "|", "ReservationEndDate"));
+
             while (resultSet.next()){
                 Reservation reservation = new Reservation();
                 reservation.setReservationID(resultSet.getInt("ReservationID"));
@@ -27,6 +29,8 @@ public class ReservationDB {
                 reservation.setReservationStartDate(resultSet.getString("ReservationStartDate"));
                 reservation.setReservationEndDate(resultSet.getString("ReservationEndDate"));
                 reservation.setPesel(resultSet.getString("Pesel"));
+                System.out.println(String.format("%10s %20s %10s %20s %10s %20s %10s",
+                        reservation.getReservationID(), "|", reservation.getCarID(), "|",reservation.getReservationStartDate(), "|",reservation.getReservationEndDate()));
                 reservationsList.add(reservation);
             }
         }catch (SQLException e){

@@ -89,38 +89,38 @@ public class AdminMenu{
             switch (choice){
                 case 1:
                     UserDB.getAllClients();
-                    List<Client> clientsFromDatabase = UserDB.getAllClients();
-                    System.out.println("************************");
-                    for (Client client : clientsFromDatabase) {
-                        System.out.println(client.getName()+" | "
-                                + client.getLogin() +" | "
-                                +client.getId());
-                    }
-                    System.out.println("************************");
+                    //List<Client> clientsFromDatabase = UserDB.getAllClients();
+//                    System.out.println("************************");
+//                    for (Client client : clientsFromDatabase) {
+//                        System.out.println(client.getName()+" | "
+//                                + client.getLogin() +" | "
+//                                +client.getId());
+//                    }
+//                    System.out.println("************************");
                     break;
                 case 2:
                     CarDB.getAllCars();
-                    List<Car> carsFromDatabase = CarDB.getAllCars();
-                    System.out.println("************************");
-                    for (Car car : carsFromDatabase) {
-                        System.out.println(car.getId()+" | "
-                                + car.getType()+" | "
-                                +car.getName());
-                    }
-                    System.out.println("************************");
+//                    List<Car> carsFromDatabase = CarDB.getAllCars();
+//                    System.out.println("************************");
+//                    for (Car car : carsFromDatabase) {
+//                        System.out.println(car.getId()+" | "
+//                                + car.getType()+" | "
+//                                +car.getName());
+//                    }
+//                    System.out.println("************************");
                     break;
                 case 3:
                     ReservationDB.getAllReservation();
-                    List<Reservation> reservationsFromDatabase = ReservationDB.getAllReservation();
-                    System.out.println("************************");
-                    for (Reservation reservation : reservationsFromDatabase) {
-                        System.out.println(reservation.getReservationID()+" | "
-                        +reservation.getCarID()+" | "
-                        +reservation.getReservationStartDate()+" | "
-                        +reservation.getReservationEndDate()+" | "
-                        +reservation.getPesel());
-                    }
-                    System.out.println("************************");
+//                    List<Reservation> reservationsFromDatabase = ReservationDB.getAllReservation();
+//                    System.out.println("************************");
+//                    for (Reservation reservation : reservationsFromDatabase) {
+//                        System.out.println(reservation.getReservationID()+" | "
+//                        +reservation.getCarID()+" | "
+//                        +reservation.getReservationStartDate()+" | "
+//                        +reservation.getReservationEndDate()+" | "
+//                        +reservation.getPesel());
+//                    }
+//                    System.out.println("************************");
                     break;
                 case 4:
 

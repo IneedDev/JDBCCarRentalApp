@@ -14,19 +14,21 @@ import java.util.List;
 public class UserDB {
 
     public static List<Client> getAllClients(){
-
         List<Client> clientList = new ArrayList<>();
         String sql = "SELECT * FROM `tclients`";
-
         try{
             PreparedStatement ps = ConnectorDB.connection.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
-
+            System.out.println(String.format("%10s %20s %10s %20s %10s %20s %10s", "Name", "|", "ClientID", "|", "Login", "|", "Pesel"));
             while (resultSet.next()){
                 Client client = new Client();
                 client.setName(resultSet.getString("Name"));
                 client.setId(resultSet.getInt("ClientID"));
                 client.setLogin(resultSet.getString("Login"));
+                client.setPesel(resultSet.getString("Pesel"));
+                System.out.println(String.format("%10s %20s %10s %20s %10s %20s %10s", client.getName(), "|",
+                        client.getId() ,"|",client.getLogin(), "|", client.getPesel()));
+
                 clientList.add(client);
             }
 
