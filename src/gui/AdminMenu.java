@@ -11,19 +11,28 @@ import db.UserDB;
 import java.util.List;
 import java.util.Scanner;
 
-public class AdminMenu {
+public class AdminMenu{
 
     public static int adminMenuInput(){
         do{
             System.out.println("1 Login");
+            System.out.println("2 Add Admin");
             Scanner scanner = new Scanner(System.in);
-            int choice = Integer.parseInt(scanner.nextLine());
-
-            if (choice==1){
+            while (!scanner.hasNextInt()){
+                String input = scanner.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
+            int choice = scanner.nextInt();
+            while (choice<0){
+                System.out.printf("You have entered a negative number %d.\n", choice);
+                break;
+            }
+            if (choice==1 || choice==2){
                 return choice;
             }
         }while (true);
     }
+
 
     public static Admin adminMenuLoginInput(){
         Scanner scanner = new Scanner(System.in);
@@ -55,8 +64,6 @@ public class AdminMenu {
             }
         }
     }
-
-
 
     public static int adminMenuAfterLoginInput(){
         do{

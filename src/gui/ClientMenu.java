@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ClientMenu {
+public class ClientMenu{
 
     public static int clientMenuInput(){
         do{
@@ -56,12 +56,49 @@ public class ClientMenu {
         do{
             System.out.println("1 Get cars");
             System.out.println("2 Reserve a car");
+            System.out.println("3 Print your reservation");
             Scanner scanner = new Scanner(System.in);
             int choice = Integer.parseInt(scanner.nextLine());
-            if (choice==1 || choice==2){
+            if (choice==1 || choice==2 || choice==3){
                 return choice;
             }
         }while (true);
+    }
+
+    public static void clientMenuAfterLogin(){
+        while (true){
+            int choice = clientMenuAfterLoginInput();
+            switch (choice){
+                case 1:
+                    CarDB.getAllCars();
+                    List<Car> carsFromDatabase = CarDB.getAllCars();
+                    System.out.println("************************");
+                    for (Car car : carsFromDatabase) {
+                        System.out.println(car.getId()+" | "+ car.getType()+" | "+car.getName());
+                    }
+                    System.out.println("************************");
+                    break;
+                case 2:
+                    //clientReservationMenuInput();
+                    clientMenuReservationProcess();
+                    System.out.println("Reservation done!!!");
+                    break;
+                case 3:
+                    System.out.println("Give your PESEL number");
+                    Scanner scanner = new Scanner(System.in);
+                    String Pesel = scanner.next();
+                    Reservation reservation = new Reservation();
+                    reservation.setPesel(Pesel);
+                    List<Reservation> reservationList = ReservationDB.getReservationByPesel(reservation);
+                    for (Reservation reservation1 : reservationList) {
+                        System.out.println(reservation.getCarID()+"   |   "+
+                                reservation.getReservationID()+"   |   "+
+                                reservation.getReservationStartDate()+"   |   "+
+                                reservation.getReservationEndDate());
+                    }
+                    break;
+            }
+        }
     }
 
     public static Reservation clientReservationMenuInput(){
@@ -82,6 +119,7 @@ public class ClientMenu {
             System.out.printf("Date format not correct, Please try once again\n");
         }
 
+
         System.out.println("4 Give your PESEL number");
         String Pesel = scanner.next();
         Reservation reservation = new Reservation();
@@ -90,6 +128,14 @@ public class ClientMenu {
         reservation.setCarID(CarID);
         reservation.setPesel(Pesel);
 
+        ReservationDB.checkDatesForReservation(reservation);
+
+        if(ReservationDB.checkDatesForReservation(reservation).size()!=0){
+            System.out.println("Reservation for this period not possible, Please change dates");
+            clientMenuReservationProcess();
+        }else {
+            ReservationDB.makeReservation(reservation);
+        }
         //clarify how to pass reservation object to another method without repeating
 //        System.out.println(ReservationDB.checkDatesForReservation(reservation));
 //
@@ -100,32 +146,10 @@ public class ClientMenu {
 //        }else {
 //            System.out.printf("Change dates");
 //        }
-
         /* this cause second login menu
         reservation.setLogin(clientCurrentLogin());
          */
         return reservation;
-    }
-    public static void clientMenuAfterLogin(){
-        while (true){
-            int choice = clientMenuAfterLoginInput();
-            switch (choice){
-                case 1:
-                    CarDB.getAllCars();
-
-                    List<Car> carsFromDatabase = CarDB.getAllCars();
-                    System.out.println("************************");
-                    for (Car car : carsFromDatabase) {
-                        System.out.println(car.getId()+" | "+ car.getType()+" | "+car.getName());
-                    }
-                    System.out.println("************************");
-                    break;
-                case 2:
-                    clientReservationMenuInput();
-                    System.out.println("Reservation done!!!");
-                    break;
-            }
-        }
     }
 
     public static void clientMenuReservationProcess(){

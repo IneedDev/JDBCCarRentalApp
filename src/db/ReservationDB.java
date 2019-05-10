@@ -34,6 +34,30 @@ public class ReservationDB {
         }
         return reservationsList;
     }
+
+    public static List<Reservation> getReservationByPesel(Reservation reservation){
+        List<Reservation> reservationsList = new ArrayList<>();
+        String sql = "SELECT * FROM `treservations` WHERE pesel=?";
+        try{
+            PreparedStatement ps = ConnectorDB.connection.prepareStatement(sql);
+            ps.setString(1,reservation.getPesel());
+            ResultSet resultSet = ps.executeQuery();
+            System.out.println(String.format("%10s %20s %10s %20s %10s %20s %10s", "CarID", "|", "StartDate", "|", "EndDate", "|", "Pesel"));
+            while (resultSet.next()){
+                String pesel = resultSet.getString("Pesel");
+                String carId = resultSet.getString("CarID");
+                String startDate = resultSet.getString("ReservationStartDate");
+                String endDate = resultSet.getString("ReservationEndDate");
+                System.out.println(String.format("%10s %20s %10s %20s %10s %20s %10s",
+                        carId, "|", startDate, "|",endDate, "|",pesel));
+            }
+            System.out.println("\n");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return reservationsList;
+    }
+
     public static void makeReservation(Reservation reservation){
         /*
         String sql= "INSERT INTO treservations (CarID, ReservationStartDate, ReservationEndDate, Login) VALUES (?, ?, ?, ?)";
@@ -56,14 +80,17 @@ public class ReservationDB {
 
     public static List<Reservation> checkDatesForReservation(Reservation reservation){
         List<Reservation> reservationList = new ArrayList<>();
-        String sql2= "SELECT ReservationStartDate, ReservationEndDate FROM treservations WHERE ReservationStartDate< ? AND ReservationEndDate> ?";
-
+        String sql2= "SELECT *" +
+                "FROM treservations " +
+                "WHERE ReservationStartDate>=? AND ReservationEndDate<= ?";
         try{
             PreparedStatement ps = ConnectorDB.connection.prepareStatement(sql2);
             ps.setString(1,reservation.getReservationStartDate());
             ps.setString(2,reservation.getReservationEndDate());
-            ps.execute();
-
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()){
+                reservationList.add(reservation);
+            }
         }catch (SQLException e){
             e.getStackTrace();
         }

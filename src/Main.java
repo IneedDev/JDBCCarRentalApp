@@ -15,6 +15,7 @@ public class Main {
         ConnectorDB.connect();
 
         Menu.displayMenu();
+
         //ClientMenu.clientReservationMenuInput();
 
         // TODO - general input validation regex
